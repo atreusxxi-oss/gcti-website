@@ -243,3 +243,20 @@
 @media(max-width:800px){.brand-row.wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand-row .brand{flex:0 1 auto;min-width:0}.brand-row .brand img{display:block;max-width:100%;height:auto;object-fit:contain}.menu-toggle{position:relative;inset:auto;z-index:22;display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;margin-left:auto;padding:0}.menu-toggle img{display:block;width:24px;height:24px;filter:brightness(.42)}.menu-toggle i{display:none}.hero{width:100%;max-width:none;margin-inline:0;height:auto;min-height:0;aspect-ratio:2058/764;padding:0}.hero-slide img{width:100%;height:100%;object-fit:contain;object-position:center;background:#233642}.intro-photo{width:100%;height:auto;aspect-ratio:512/279}.intro-photo img{display:block;width:100%;height:100%;object-fit:contain}.pathway-card img,.pathway-card video{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}.pathway-card video{background:#000}.post-cover{width:100%;height:auto;max-height:none;object-fit:contain}.content-article img,.post-body img{display:block;max-width:100%;height:auto;object-fit:contain}}
 
 @media(max-width:800px){.menu-toggle{background:#f2f4f7 url('../images/menu_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg') center/24px 24px no-repeat}.menu-toggle img{display:none}}
+
+/* Keep the three learning media cards equal in width and media ratio. */
+.pathway-grid{height:auto;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:14px}
+.learning-section .pathway-card{width:100%;height:auto;min-width:0;min-height:0;padding:0;gap:12px;overflow:hidden}
+.pathway-card img,.pathway-card video{display:block;width:100%;height:auto;aspect-ratio:16/9;flex:none;object-fit:contain;border-radius:12px}
+.pathway-card img{background:#e4e7ec}
+.pathway-card video{background:#000}
+@media(max-width:560px){.pathway-grid{grid-template-columns:minmax(0,1fr)}.learning-section .pathway-card{width:100%}.pathway-card img,.pathway-card video{aspect-ratio:16/9;border-radius:12px}}
+
+/* Latest local review adjustments. */
+.intro-copy a.section-kicker{font-size:18px;margin:3px 0;text-decoration:none}
+.intro-copy a.section-kicker:hover{color:#1849a9}
+.learning-section .admission-teaser{margin-top:14px}
+.home-all-news{gap:2px}
+.learning-section{height:520px}
+.pathway-card:nth-child(3) img{object-fit:cover}
+@media(max-width:800px){.learning-section{height:auto}}
