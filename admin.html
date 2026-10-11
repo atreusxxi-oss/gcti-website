@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <title>GCTI 網站內容編輯器</title>
+  <link rel="stylesheet" href="assets/css/admin.css?v=20261011-backend-guard">
+  <script src="assets/js/news-data.js" defer></script>
+  <script src="assets/js/page-data.js" defer></script>
+  <script src="assets/js/navigation-data.js" defer></script>
+  <script src="assets/js/settings-data.js" defer></script>
+  <script src="assets/js/home-data.js" defer></script>
+  <script src="assets/js/admin.js?v=20261011-backend-guard" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">G</span><span><strong>GCTI</strong><small>網站內容管理</small></span></a><div class="top-actions"><span id="account-role" class="save-state"></span><span id="save-state" class="save-state">已連線到本機網站</span><button id="save-all" class="button primary">儲存全部變更</button><button id="logout" class="button">登出</button></div></header>
+  <div class="workspace">
+    <aside class="sidebar"><p class="side-label">網站內容</p><button class="side-link active" data-view="home">首頁</button><button class="side-link" data-view="pages">網站內頁</button><button class="side-link" data-view="news">最新消息</button><button class="side-link" data-view="navigation" hidden>導覽分類</button><button class="side-link" data-view="settings" hidden>全站設定</button><a class="side-link preview-link" href="index.html" target="_blank" rel="noopener">開啟網站預覽 ↗</a><div class="side-help"><strong>在你的電腦上編輯</strong><p>儲存會直接更新網站檔案。完成後，將 site 資料夾部署到網站主機。</p></div></aside>
+    <main class="main-panel">
+      <section class="view active" id="view-home"><div class="view-heading"><div><p class="eyebrow">GCTI WEBSITE</p><h1>首頁內容</h1><p>在預覽畫面直接點選文字修改，也可加入圖片、影片和超連結。</p></div><button class="button" id="home-edit-toggle">開始編輯首頁</button></div><div class="editor-toolbar" id="home-toolbar" hidden>
+        <button data-command="bold" title="粗體"><b>B</b></button><button data-command="italic" title="斜體"><i>I</i></button><button data-command="formatBlock" data-value="h2" title="標題">標題</button><button data-command="formatBlock" data-value="p" title="段落">段落</button><button data-command="insertUnorderedList" title="項目清單">• 清單</button><button data-insert="link">插入連結</button><button data-insert="image">加入圖片</button><button data-insert="video">嵌入影片</button><button data-command="undo">復原</button><span>選取預覽裡的文字後使用工具列格式；影片請貼 YouTube 或 Vimeo 網址。</span>
+      </div><div class="preview-shell"><iframe id="home-preview" title="首頁即時預覽" src="index.html"></iframe></div><p class="helper">編輯模式下可直接改字；點「加入圖片」上傳圖片，點「嵌入影片」貼上影片連結。儲存後網站會保留修改。</p></section>
+      <section class="view" id="view-pages"><div class="view-heading"><div><p class="eyebrow">CONTENT PAGES</p><h1>網站內頁</h1><p>編輯文字、圖片、影片、連結，也可以建立新的內頁。</p></div><button class="button primary" id="new-page">＋ 新增內頁</button></div><div class="edit-layout"><div class="item-list"><label for="page-select">選擇內頁</label><select id="page-select" size="14"></select></div><div class="form-panel" id="page-form"></div></div></section>
+      <section class="view" id="view-news"><div class="view-heading"><div><p class="eyebrow">NEWS & UPDATES</p><h1>最新消息</h1><p>新增消息或修改標題、分類、日期和文章內容。</p></div><button class="button primary" id="new-news">＋ 新增消息</button></div><div class="edit-layout"><div class="item-list"><label for="news-select">選擇消息</label><select id="news-select" size="14"></select></div><div class="form-panel" id="news-form"></div></div></section>
+      <section class="view" id="view-navigation"><div class="view-heading"><div><p class="eyebrow">SITE MENU</p><h1>導覽分類</h1><p>調整 Wix 原站的分類名稱、連結，或新增一級分類和子分類。</p></div></div><div class="nav-editor"><div class="item-list"><label for="nav-select">分類清單</label><select id="nav-select" size="18"></select><div class="stack-actions"><button class="button" id="nav-add-root">＋ 新增一級分類</button><button class="button" id="nav-add-child">＋ 新增子分類</button></div></div><div class="form-panel" id="nav-form"></div></div></section>
+      <section class="view" id="view-settings"><div class="view-heading"><div><p class="eyebrow">SITE-WIDE SETTINGS</p><h1>全站設定</h1><p>修改所有頁面共用的頁尾聯絡方式及頁首社群連結。</p></div></div><div class="form-panel" id="settings-form"></div></section>
+      <section class="media-library"><div><strong>圖片與影片素材</strong><p>素材會存進網站的 assets/uploads 資料夾，部署 site 資料夾時一併上傳。</p></div><label class="button">上傳素材<input id="media-upload" type="file" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm" multiple hidden></label><div id="media-list" class="media-list"></div></section>
+      <div class="backup-bar" id="backup-bar" hidden><div><strong>備份與還原</strong><p>匯出內容備份 JSON。圖片影片會保存在素材資料夾，請一併備份。</p></div><div><button class="button" id="export-backup">匯出內容備份</button><label class="button">匯入備份<input id="import-backup" type="file" accept="application/json" hidden></label></div></div>
+    </main>
+  </div>
+  <input type="file" id="inline-media" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm" hidden>
+</body>
+</html>

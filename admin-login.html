@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <meta name="referrer" content="no-referrer">
+  <title>登入 GCTI 網站內容編輯器</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f4f7fb;color:#101828;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{width:min(420px,calc(100% - 32px));padding:36px;border:1px solid #e4e7ec;border-radius:18px;background:#fff;box-shadow:0 12px 36px #10182812}.brand{display:flex;align-items:center;gap:12px;margin-bottom:28px}.mark{display:grid;width:44px;height:44px;place-items:center;border-radius:12px;background:#2985f9;color:#fff;font-size:22px;font-weight:700}.brand strong,.brand small{display:block}.brand small{color:#667085;font-size:12px}.eyebrow{margin:0 0 4px;color:#1570ef;font-size:11px;font-weight:700;letter-spacing:.14em}h1{margin:0;font-size:25px;line-height:1.35}.copy{margin:10px 0 24px;color:#667085;font-size:14px}.message{min-height:24px;margin:14px 0 0;color:#b42318;font-size:13px}.setup{padding:12px;border-radius:10px;background:#fff6ed;color:#93370d;font-size:13px}.setup code{word-break:break-all}.footer{margin:20px 0 0;color:#98a2b3;font-size:12px}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="mark">G</span><span><strong>GCTI</strong><small>網站內容管理</small></span></div>
+    <p class="eyebrow">SECURE EDITOR</p>
+    <h1>登入後台編輯器</h1>
+    <p class="copy">請使用獲授權的 Google 帳戶登入。未授權帳戶無法讀取或修改網站內容。</p>
+    <div id="google-button"></div>
+    <p id="message" class="message" role="status"></p>
+    <p id="setup" class="setup" hidden>尚未設定 Google OAuth 用戶端 ID。請在 <code>scripts/gcti_editor_config.json</code> 設定後重新啟動後台。</p>
+    <p class="footer">登入有效期限為 8 小時；登出或關閉後台伺服器會結束工作階段。</p>
+  </main>
+  <script>
+    const message=document.querySelector("#message");
+    const loginErrors={setup:"Google 登入尚未完成設定，請重新啟動編輯器或聯絡管理員。",dependency:"缺少 Google 驗證套件，請重新執行後台啟動器。",invalid:"登入資料格式錯誤，請重新登入。",unauthorized:"這個 Google 帳戶未獲授權使用編輯器。",verify:"Google 登入驗證失敗，請再試一次。"};
+    const loginError=new URLSearchParams(location.search).get("error");
+    if(loginError&&loginErrors[loginError])message.textContent=loginErrors[loginError];
+    fetch("/api/auth/me",{credentials:"include",cache:"no-store"}).then(r=>r.ok?location.replace("/admin.html"):null).catch(()=>{});
+    fetch("/api/auth/config").then(r=>r.json()).then(({clientId})=>{
+      if(!clientId){document.querySelector("#setup").hidden=false;return;}
+      const script=document.createElement("script");script.src="https://accounts.google.com/gsi/client";script.async=true;script.defer=true;
+      script.onload=()=>{google.accounts.id.initialize({client_id:clientId,callback:({credential})=>{if(!credential){message.textContent="Google 沒有傳回登入憑證，請重新載入後再試一次。";return;}message.textContent="正在驗證帳戶…";const form=document.createElement("form");form.method="POST";form.action="/api/auth/google";const input=document.createElement("input");input.type="hidden";input.name="credential";input.value=credential;form.append(input);document.body.append(form);form.submit();}});google.accounts.id.renderButton(document.querySelector("#google-button"),{theme:"outline",size:"large",shape:"pill",text:"signin_with",width:320});};
+      script.onerror=()=>message.textContent="無法載入 Google 登入服務，請確認網路連線後重試。";document.head.append(script);
+    }).catch(()=>message.textContent="無法連接本機後台服務，請重新啟動編輯器。");
+  </script>
+</body>
+</html>

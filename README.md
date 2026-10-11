@@ -26,7 +26,9 @@ python3 -m http.server 8000
 
 ## 編輯網站內容
 
-專案根目錄的 `scripts/開啟GCTI後台.command` 會啟動只接受本機連線的編輯服務。啟動後在瀏覽器開啟 `http://127.0.0.1:8001/admin.html`。也可以在專案根目錄執行 `python3 scripts/gcti_editor_server.py`。
+專案根目錄的 `scripts/開啟GCTI後台.command` 會建立 Python 虛擬環境、安裝 Google 登入驗證套件，並啟動只接受本機連線的編輯服務。啟動後在瀏覽器開啟 `http://127.0.0.1:8001/admin.html`。也可以在專案根目錄啟用 `.gcti-editor-venv` 後執行 `python scripts/gcti_editor_server.py`。
+
+編輯器的管理 API 要求有效的 Google 登入工作階段。`atreus.xxi@gmail.com` 是管理員，可管理導覽、全站設定及備份；`way1129@gmail.com` 是內容編輯者，可修改首頁、內頁、消息及上傳素材。權限同時在介面和後端儲存 API 限制。首次使用前，請在 Google Cloud Console 建立「Web application」OAuth 用戶端，將 `http://localhost:8001` 和 `http://127.0.0.1:8001` 加入已授權 JavaScript 來源，並將用戶端 ID 填入 `scripts/gcti_editor_config.json` 的 `google_client_id`。用戶端 ID 不是密碼；請勿把 OAuth client secret 放進此本機編輯器。登入 ID token 會由 Python 後端驗證，儲存、上傳和素材 API 都會檢查伺服器端工作階段。此登入設計仍是本機編輯器用途，不應把這個 Python 服務直接公開到網際網路。
 
 - **首頁**：直接在即時預覽中修改內容，使用工具列格式化文字、加入連結、圖片或影片。
 - **網站內頁**：修改現有內頁或新增頁面；富文字區支援標題、清單、連結、圖片和影片。
